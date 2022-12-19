@@ -66,7 +66,15 @@ def train_naive_bayes(X_train: pd.DataFrame, y_train: pd.DataFrame, X_test: pd.D
     return lr_tuned
 
 
-def prediction(path_to_data: str, path_to_model: str) -> None
+def prediction(path_to_data: str, path_to_model: str) -> None:
+    df = get_data(path_to_data)
+    X_train, X_test, y_train, y_test = split(df)
+    if not os.path.exists(path_to_model) and path_to_model == settings.rf_conf:
+        train_random_forest(X_train, y_train, X_test, y_test, path_to_model)
+    elif not os.path.exists(path_to_model) and path_to_model == settings.lr_conf:
+        train_naive_bayes(X_train, y_train, X_test, y_test, path_to_model)
+    else:
+        logging.info("The model is found")
     clf = load_model(dir=path_to_model)
     logging.info(f'Prediction for model is {clf.predict(X_test)}')
 #    return clf.predict(X_test)
